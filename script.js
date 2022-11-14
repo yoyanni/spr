@@ -1,28 +1,58 @@
 // Start Game
 
-function startGame(playerSelection, computerSelection) {
+game();
+
+function game() {
+  //5 round game
+  let player = 0;
+  let pc = 0;
+  let result;
+  for (let i = 0; i < 5; i++) {
+    result = playRound(getPlayerChoice(), getComputerChoice());
+    if (result == "player") {
+      ++player;
+    } else if (result == "pc") {
+      ++pc;
+    }
+  }
+  if (player > pc) {
+    console.log(`You won! ${player} vs ${pc}`);
+  } else if (pc > player) {
+    console.log(`You lost! ${pc} vs ${player}`);
+  } else {
+    console.log(`It is a draw! ${pc} vs ${player}`);
+  }
+}
+
+function playRound(playerSelection, computerSelection) {
   //annouce winner (1 round)
   switch (true) {
-    case playerSelection == computerChoice:
+    case playerSelection == computerSelection:
       console.log("It's a draw!");
       break;
-    case playerSelection == "scissors" && computerChoice == "paper":
-      console.log("You win!");
+    case playerSelection == "scissors" && computerSelection == "paper":
+      console.log("You won that one!");
+      return "player";
       break;
-    case playerSelection == "scissors" && computerChoice == "rock":
-      console.log("You lose!");
+    case playerSelection == "scissors" && computerSelection == "rock":
+      console.log("You lost that one!");
+      return "pc";
       break;
-    case playerSelection == "paper" && computerChoice == "rock":
-      console.log("You win!");
+    case playerSelection == "paper" && computerSelection == "rock":
+      console.log("You won that one!");
+      return "player";
       break;
-    case playerSelection == "paper" && computerChoice == "scissors":
-      console.log("You lose!");
+    case playerSelection == "paper" && computerSelection == "scissors":
+      console.log("You lost that one!");
+      return "pc";
       break;
-    case playerSelection == "rock" && computerChoice == "scissors":
-      console.log("You win!");
+    case playerSelection == "rock" && computerSelection == "scissors":
+      console.log("You won that one!");
+      return "player";
       break;
-    case playerSelection == "rock" && computerChoice == "paper":
-      console.log("You lose!");
+    case playerSelection == "rock" && computerSelection == "paper":
+      console.log("You lost that one!");
+      return "pc";
       break;
     default:
       console.log("Something went wrong.. please try again.");
@@ -47,5 +77,3 @@ function getComputerChoice() {
   let choices = ["Scissors", "Paper", "Rock"];
   return choices[choice].toLowerCase();
 }
-
-startGame(getPlayerChoice(), getComputerChoice());
