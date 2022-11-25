@@ -1,71 +1,26 @@
-// Start Game
+// Global Score
+let player = 0;
+let pc = 0;
 
-game();
+// Button Elements
+const scissors = document.getElementById("scissors");
+const paper = document.getElementById("paper");
+const rock = document.getElementById("rock");
 
-function game() {
-  //5 round game
-  let player = 0;
-  let pc = 0;
-  let result;
-  for (let i = 0; i < 5; i++) {
-    result = playRound(getPlayerChoice(), getComputerChoice());
-    if (result == "player") {
-      ++player;
-    } else if (result == "pc") {
-      ++pc;
-    }
-  }
-  if (player > pc) {
-    console.log(`You won! ${player} vs ${pc}`);
-  } else if (pc > player) {
-    console.log(`You lost! ${pc} vs ${player}`);
-  } else {
-    console.log(`It is a draw! ${pc} vs ${player}`);
-  }
-}
+// Button EventListeners
+scissors.addEventListener("click", getPlayerChoice);
+paper.addEventListener("click", getPlayerChoice);
+rock.addEventListener("click", getPlayerChoice);
 
-function playRound(playerSelection, computerSelection) {
-  //annouce winner (1 round)
-  switch (true) {
-    case playerSelection == computerSelection:
-      console.log("It's a draw!");
-      break;
-    case playerSelection == "scissors" && computerSelection == "paper":
-      console.log("You won that one!");
-      return "player";
-      break;
-    case playerSelection == "scissors" && computerSelection == "rock":
-      console.log("You lost that one!");
-      return "pc";
-      break;
-    case playerSelection == "paper" && computerSelection == "rock":
-      console.log("You won that one!");
-      return "player";
-      break;
-    case playerSelection == "paper" && computerSelection == "scissors":
-      console.log("You lost that one!");
-      return "pc";
-      break;
-    case playerSelection == "rock" && computerSelection == "scissors":
-      console.log("You won that one!");
-      return "player";
-      break;
-    case playerSelection == "rock" && computerSelection == "paper":
-      console.log("You lost that one!");
-      return "pc";
-      break;
-    default:
-      console.log("Something went wrong.. please try again.");
-  }
-}
+// Result Displays
+const result = document.getElementById("result");
+const result1 = document.getElementById("result1");
 
 // Player Choice
-function getPlayerChoice() {
-  let choice = prompt(
-    "The choice of your weapon? \n Scissors, Paper or Rock?"
-  ).toLowerCase();
+function getPlayerChoice(e) {
+  let choice = e.target.value;
   if (choice == "scissors" || choice == "paper" || choice == "rock") {
-    return choice;
+    return playRound(choice, getComputerChoice());
   } else {
     alert("Please add a valid answer!");
   }
@@ -76,4 +31,66 @@ function getComputerChoice() {
   let choice = Math.floor(Math.random() * 3);
   let choices = ["Scissors", "Paper", "Rock"];
   return choices[choice].toLowerCase();
+}
+
+// One Game Round - Decides who has won depending on params
+function playRound(playerSelection, computerSelection) {
+  switch (gameOver()) {
+    case playerSelection == "scissors" && computerSelection == "paper":
+    case playerSelection == "paper" && computerSelection == "rock":
+    case playerSelection == "rock" && computerSelection == "scissors":
+      result.textContent = "You won that one!";
+      player++;
+      return score("player");
+      break;
+    case playerSelection == "scissors" && computerSelection == "rock":
+    case playerSelection == "paper" && computerSelection == "scissors":
+    case playerSelection == "rock" && computerSelection == "paper":
+      result.textContent = "You lost that one!";
+      pc++;
+      return score("pc");
+      break;
+    case playerSelection == computerSelection:
+      result.textContent = "It's a draw!";
+      break;
+    case "gameover":
+      result.textContent = "The game has already finished..";
+      break;
+    default:
+      console.log("Something went wrong.. please try again.");
+      break;
+  }
+}
+
+//5 round game
+function score(winner) {
+  if (winner == "player") {
+    
+  } else if (winner == "pc") {
+    
+  }
+
+  if (player > pc) {
+    if (player >= 5) {
+      result1.textContent = "You've won!";
+    } else {
+      result1.textContent = `You are winning! ${player} vs ${pc}`;
+    }
+  } else if (pc > player) {
+    if (pc >= 5) {
+      result1.textContent = "You've lost!";
+    } else {
+      result1.textContent = `You are losing! ${player} vs ${pc}`;
+    }
+  } else {
+    result1.textContent = `It is a draw so far! ${player} vs ${pc}`;
+  }
+}
+
+function gameOver() {
+  if (player >= 5 || pc >= 5) {
+    return "gameover";
+  } else {
+    return true;
+  }
 }
